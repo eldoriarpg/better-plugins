@@ -1,0 +1,76 @@
+package de.eldoria.betterplugins.configuration;
+
+import de.eldoria.betterplugins.configuration.elements.ConfPlugin;
+import de.eldoria.eldoutilities.configuration.EldoConfig;
+import org.bukkit.plugin.Plugin;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
+
+public class Configuration extends EldoConfig {
+    private Map<String, ConfPlugin> activePlugins;
+    private Map<String, ConfPlugin> inactivePlugins;
+    private boolean checkUpdates = true;
+
+    public Configuration(Plugin plugin) {
+        super(plugin);
+    }
+
+    @Override
+    protected void reloadConfigs() {
+        activePlugins = new HashMap<>();
+        inactivePlugins = new HashMap<>();
+        for (ConfPlugin plugin : (List<ConfPlugin>) getConfig().getList("activePlugins", new ArrayList<ConfPlugin>())) {
+            setActive(plugin);
+        }
+
+        for (ConfPlugin plugin : (List<ConfPlugin>) getConfig().getList("inactivePlugins", new ArrayList<ConfPlugin>())) {
+            setInactive(plugin);
+        }
+
+        checkUpdates = getConfig().getBoolean("checkUpdates");
+    }
+
+    public Collection<ConfPlugin> activePlugins() {
+        return Collections.unmodifiableCollection(activePlugins.values());
+    }
+
+    public Collection<ConfPlugin> inactivePlugins() {
+        return Collections.unmodifiableCollection(inactivePlugins.values());
+    }
+
+    public void setActive(ConfPlugin plugin) {
+        inactivePlugins.remove(plugin.name().toLowerCase(Locale.ROOT));
+        activePlugins.put(plugin.name().toLowerCase(Locale.ROOT), plugin);
+    }
+
+    public boolean isActive(String name) {
+        return activePlugins.get(name.toLowerCase(Locale.ROOT)) != null;
+    }
+
+    public void setInactive(ConfPlugin plugin) {
+        activePlugins.remove(plugin.name().toLowerCase(Locale.ROOT));
+        inactivePlugins.put(plugin.name().toLowerCase(Locale.ROOT), plugin);
+    }
+
+    public boolean checkUpdates() {
+        return checkUpdates;
+    }
+
+    @Override
+    protected void saveConfigs() {
+        getConfig().set("activePlugins", new ArrayList<>(activePlugins()));
+        getConfig().set("inactivePlugins", new ArrayList<>(inactivePlugins()));
+        getConfig().set("checkUpdates", checkUpdates);
+    }
+
+    public Optional<ConfPlugin> getPlugin(String name) {
+        return Optional.ofNullable(activePlugins.get(name.toLowerCase(Locale.ROOT)));
+    }
+}
