@@ -23,7 +23,7 @@ public class Show extends AdvancedCommand implements ITabExecutor {
     private final Info info;
 
     public Show(Plugin plugin, Configuration configuration, Info info) {
-        super(plugin, CommandMeta.builder("hide")
+        super(plugin, CommandMeta.builder("show")
                 .addUnlocalizedArgument("plugin", true)
                 .build());
         this.configuration = configuration;

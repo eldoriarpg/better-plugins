@@ -24,8 +24,8 @@ java {
 dependencies {
     compileOnly("org.spigotmc", "spigot-api", "1.16.5-R0.1-SNAPSHOT")
     implementation("de.eldoria", "eldo-util", "1.14.0-DEV")
-    implementation("net.kyori", "adventure-platform-bukkit", "4.1.2")
-    implementation("net.kyori", "adventure-text-minimessage", "4.10.1")
+    bukkitLibrary("net.kyori", "adventure-platform-bukkit", "4.1.2")
+    bukkitLibrary("net.kyori", "adventure-text-minimessage", "4.10.1")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
 }
@@ -33,8 +33,7 @@ dependencies {
 tasks {
     shadowJar {
         val shadebase = "de.eldoria.betterplugins."
-        //relocate("de.eldoria.eldoutilities", shadebase + "eldoutilities")
-        relocate("net.kyori", shadebase + "adventure")
+        relocate("de.eldoria.eldoutilities", shadebase + "eldoutilities")
         mergeServiceFiles()
         archiveFileName.set("betterplugins.jar")
     }

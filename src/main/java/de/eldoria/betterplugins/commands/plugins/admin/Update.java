@@ -25,7 +25,7 @@ public class Update extends AdvancedCommand implements ITabExecutor {
     private final Info info;
 
     public Update(Plugin plugin, Configuration configuration, Info info) {
-        super(plugin, CommandMeta.builder("hide").addUnlocalizedArgument("plugin", true).build());
+        super(plugin, CommandMeta.builder("update").addUnlocalizedArgument("plugin", true).build());
         this.configuration = configuration;
         this.info = info;
     }

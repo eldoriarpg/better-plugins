@@ -24,7 +24,7 @@ public class SpigotId extends AdvancedCommand implements ITabExecutor {
     private final Info info;
 
     public SpigotId(Plugin plugin, Configuration configuration, Info info) {
-        super(plugin, CommandMeta.builder("hide")
+        super(plugin, CommandMeta.builder("spigotid")
                 .addUnlocalizedArgument("plugin", true)
                 .build());
         this.configuration = configuration;
