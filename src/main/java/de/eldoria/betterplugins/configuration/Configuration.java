@@ -1,7 +1,9 @@
+
 package de.eldoria.betterplugins.configuration;
 
 import de.eldoria.betterplugins.configuration.elements.ConfPlugin;
 import de.eldoria.eldoutilities.configuration.EldoConfig;
+import de.eldoria.eldoutilities.simplecommands.TabCompleteUtil;
 import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
@@ -12,6 +14,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public class Configuration extends EldoConfig {
     private Map<String, ConfPlugin> activePlugins;
@@ -71,6 +74,12 @@ public class Configuration extends EldoConfig {
     }
 
     public Optional<ConfPlugin> getPlugin(String name) {
-        return Optional.ofNullable(activePlugins.get(name.toLowerCase(Locale.ROOT)));
+        return Optional.ofNullable(activePlugins.getOrDefault(name.toLowerCase(Locale.ROOT), inactivePlugins.get(name.toLowerCase(Locale.ROOT))));
+    }
+
+    public List<String> completePlugin(String string) {
+        Stream<String> stringStream = Stream.concat(activePlugins().stream(), inactivePlugins().stream())
+                                            .map(ConfPlugin::name);
+        return TabCompleteUtil.complete(string, stringStream);
     }
 }

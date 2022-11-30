@@ -3,6 +3,7 @@ package de.eldoria.betterplugins.service;
 import de.eldoria.betterplugins.configuration.Configuration;
 import de.eldoria.betterplugins.configuration.elements.ConfPlugin;
 import de.eldoria.betterplugins.configuration.elements.UpdateCheck;
+import de.eldoria.betterplugins.util.Version;
 import org.bukkit.plugin.Plugin;
 
 import java.io.IOException;
@@ -61,7 +62,8 @@ public class UpdateChecker implements Runnable {
 
         var currentVersion = getBukkitPlugin(plugin).getDescription().getVersion();
 
-        if (currentVersion.equals(latestVersion)) return;
+        // We do not trust devs to always have the latest version on spigot.
+        if (!Version.parse(currentVersion).isOlder(Version.parse(latestVersion))) return;
 
         updates.put(plugin.name(), new Update(currentVersion, latestVersion));
     }
