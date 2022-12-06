@@ -97,7 +97,7 @@ public class ConfPlugin implements ConfigurationSerializable {
 
     @Nullable
     public String infoUrl(@Nullable Player player) {
-        return player == null || player.hasPermission(Permissions.Info.Visibility.DOWNLOAD) ? infoUrl : null;
+        return player == null || player.hasPermission(Permissions.Info.Visibility.INFO) ? infoUrl : null;
     }
 
     @Nullable

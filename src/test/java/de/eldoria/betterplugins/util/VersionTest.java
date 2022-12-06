@@ -52,5 +52,10 @@ class VersionTest {
         assertTrue(newVersion.isNewer(oldVersion));
         assertFalse(oldVersion.isNewer(newVersion));
         assertFalse(oldVersion.isNewer(oldVersion));
+
+        oldVersion = Version.parse("0.9");
+        assertTrue(newVersion.isNewer(oldVersion));
+        assertFalse(oldVersion.isNewer(newVersion));
+        assertFalse(oldVersion.isNewer(oldVersion));
     }
 }

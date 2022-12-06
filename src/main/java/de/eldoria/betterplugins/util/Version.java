@@ -38,9 +38,10 @@ public record Version(List<Integer> nums) implements Comparable<Version> {
 
     @Override
     public int compareTo(@NotNull Version version) {
-        int numbers = Math.min(version.nums().size(), nums().size());
+        int numbers = Math.max(version.nums().size(), nums().size());
         for (int i = 0; i < numbers; i++) {
-            int compare = Integer.compare(nums().get(i), version.nums().get(i));
+            int compare = Integer.compare(nums().size() > i ? nums().get(i) : 0,
+                    version.nums().size() > i ? version.nums().get(i) : 0);
             if (compare != 0) return compare;
         }
         return 0;
