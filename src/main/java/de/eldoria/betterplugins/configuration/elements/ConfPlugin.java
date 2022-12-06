@@ -30,19 +30,19 @@ public class ConfPlugin implements ConfigurationSerializable {
     private final String name;
     private String prettyName;
     private String description;
-    private int spigotId;
+    private String updateIdentifier;
     private String infoUrl;
     private String downloadUrl;
     private UpdateCheck updateCheck;
     private boolean hidden;
 
-    public ConfPlugin(String name, String infoUrl, int spigotId) {
+    public ConfPlugin(String name, String infoUrl, String updateIdentifier) {
         this.name = name;
         this.prettyName = null;
         this.description = null;
         this.infoUrl = infoUrl;
         this.downloadUrl = null;
-        this.spigotId = spigotId;
+        this.updateIdentifier = updateIdentifier;
         this.updateCheck = UpdateCheck.SPIGOT;
         this.hidden = false;
     }
@@ -58,7 +58,7 @@ public class ConfPlugin implements ConfigurationSerializable {
         description = map.getValue("description");
         infoUrl = map.getValue("infoUrl");
         downloadUrl = map.getValue("downloadUrl");
-        spigotId = map.getValueOrDefault("spigotId", 0);
+        updateIdentifier = map.getValueOrDefault("updateIdentifier", "");
         updateCheck = map.getValueOrDefault("checkUpdates", UpdateCheck.SPIGOT, UpdateCheck.class);
         hidden = map.getValueOrDefault("hidden", false);
     }
@@ -67,8 +67,8 @@ public class ConfPlugin implements ConfigurationSerializable {
         return name;
     }
 
-    public int spigotId() {
-        return spigotId;
+    public String updateIdentifier() {
+        return updateIdentifier;
     }
 
     public UpdateCheck updateCheck() {
@@ -80,16 +80,29 @@ public class ConfPlugin implements ConfigurationSerializable {
         return prettyName;
     }
 
+    @Nullable
     public String description() {
         return description;
     }
 
+    @Nullable
     public String infoUrl() {
         return infoUrl;
     }
 
+    @Nullable
     public String downloadUrl() {
         return downloadUrl;
+    }
+
+    @Nullable
+    public String infoUrl(@Nullable Player player) {
+        return player == null || player.hasPermission(Permissions.Info.Visibility.DOWNLOAD) ? infoUrl : null;
+    }
+
+    @Nullable
+    public String downloadUrl(@Nullable Player player) {
+        return player == null || player.hasPermission(Permissions.Info.Visibility.DOWNLOAD) ? downloadUrl : null;
     }
 
     public void prettyName(String prettyName) {
@@ -100,8 +113,8 @@ public class ConfPlugin implements ConfigurationSerializable {
         this.description = description;
     }
 
-    public void spigotId(int spigotId) {
-        this.spigotId = spigotId;
+    public void updateIdentifier(String updateIdentifier) {
+        this.updateIdentifier = updateIdentifier;
     }
 
     public void infoUrl(String infoUrl) {
@@ -130,7 +143,7 @@ public class ConfPlugin implements ConfigurationSerializable {
             if (this.description != null) {
                 description = this.description;
             }
-            info.newLine().text("<aqua>%s", description);
+            if (!description.isBlank()) info.newLine().text("<aqua>%s", description);
         }
 
         HashSet<String> authors = new LinkedHashSet<>(descr.getAuthors());
@@ -162,19 +175,23 @@ public class ConfPlugin implements ConfigurationSerializable {
         PluginManager pm = plugin.getPluginManager();
         Plugin currPlugin = pm.getPlugin(name);
 
-        if (player == null || player.hasPermission(Permissions.DEPENDENCIES)) {
+        if (player == null || player.hasPermission(Permissions.Info.Visibility.DEPENDS)) {
             List<String> depend = new ArrayList<>(currPlugin.getDescription().getDepend());
             depend.remove("ViaVersion");
             if (!depend.isEmpty()) {
                 base.newLine().text(buildPluginDepend(plugin, depend, player, "Depends"));
             }
+        }
 
+        if (player == null || player.hasPermission(Permissions.Info.Visibility.SOFT_DEPENDS)) {
             List<String> softDepend = new ArrayList<>(currPlugin.getDescription().getSoftDepend());
             softDepend.remove("ViaVersion");
             if (!softDepend.isEmpty()) {
                 base.newLine().text(buildPluginDepend(plugin, softDepend, player, "Soft Depends"));
             }
+        }
 
+        if (player == null || player.hasPermission(Permissions.Info.Visibility.USAGE)) {
             var usedBy = plugin.configuration().activePlugins().stream()
                                .map(pl -> pm.getPlugin(pl.name()))
                                .filter(Objects::nonNull)
@@ -199,16 +216,16 @@ public class ConfPlugin implements ConfigurationSerializable {
                                .toList();
 
             if (!usedBy.isEmpty()) {
-                base.newLine().text("Used by: %s", String.join(", ", usedBy));
+                base.newLine().text("<dark_green>Used by: %s", String.join(", ", usedBy));
             }
         }
 
-        if (infoUrl != null && downloadUrl != null) {
+        if (infoUrl(player) != null && downloadUrl(player) != null) {
             base.newLine().text("<click:open_url:'%s'><dark_green>[Info]</click>", infoUrl).space()
                 .text("<click:open_url:'%s'><gold>[Download]</click>", downloadUrl);
-        } else if (infoUrl != null) {
-            base.newLine().text("<click:open_url:'%s'><dark_green>[Info]</click>", infoUrl).space();
-        } else if (downloadUrl != null) {
+        } else if (infoUrl(player) != null) {
+            base.newLine().text("<click:open_url:'%s'><gold>[Info]</click>", infoUrl).space();
+        } else if (downloadUrl(player) != null) {
             base.newLine().text("<click:open_url:'%s'><gold>[Download]</click>", downloadUrl);
         }
 
@@ -268,7 +285,7 @@ public class ConfPlugin implements ConfigurationSerializable {
 
     public boolean isHidden(@Nullable Player player) {
         if (!hidden || player == null) return false;
-        return !player.hasPermission(Permissions.SEE_HIDDEN);
+        return !player.hasPermission(Permissions.Info.Visibility.HIDDEN);
     }
 
 
@@ -281,7 +298,7 @@ public class ConfPlugin implements ConfigurationSerializable {
                                 .add("description", description)
                                 .add("infoUrl", infoUrl)
                                 .add("downloadUrl", downloadUrl)
-                                .add("spigotId", spigotId)
+                                .add("updateIdentifier", updateIdentifier)
                                 .add("checkUpdates", updateCheck.name())
                                 .add("hidden", hidden)
                                 .build();
@@ -293,10 +310,10 @@ public class ConfPlugin implements ConfigurationSerializable {
                <dark_green>Description: <aqua>%s <click:suggest_command:'/betterplugins admin description'><yellow>[Change]</click>
                <dark_green>Info Url: <aqua>%s <click:suggest_command:'/betterplugins admin infourl'><yellow>[Change]</click>
                <dark_green>Download Url: <aqua>%s <click:suggest_command:'/betterplugins admin downloadurl'><yellow>[Change]</click>
-               <dark_green>Spigot Id: <aqua>%s <click:suggest_command:'/betterplugins admin spigotid'><yellow>[Change]</click>
+               <dark_green>Update Identifier: <aqua>%s <click:suggest_command:'/betterplugins admin updateIdentifier'><yellow>[Change]</click>
                <dark_green>Check Updates: <aqua>%s <click:suggest_command:'/betterplugins admin update'><yellow>[Change]</click>
                <dark_green>hidden: <aqua>%s <click:run_command:'/betterplugins admin togglehidden'><yellow>[Change]</click>
                """.stripIndent()
-                  .formatted(prettyName(), description, infoUrl, downloadUrl, spigotId, updateCheck, hidden);
+                  .formatted(prettyName(), description, infoUrl, downloadUrl, updateIdentifier, updateCheck, hidden);
     }
 }

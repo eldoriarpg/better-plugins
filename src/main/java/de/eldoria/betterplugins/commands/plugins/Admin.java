@@ -8,7 +8,7 @@ import de.eldoria.betterplugins.commands.plugins.admin.InfoUrl;
 import de.eldoria.betterplugins.commands.plugins.admin.Name;
 import de.eldoria.betterplugins.commands.plugins.admin.Reload;
 import de.eldoria.betterplugins.commands.plugins.admin.Show;
-import de.eldoria.betterplugins.commands.plugins.admin.SpigotId;
+import de.eldoria.betterplugins.commands.plugins.admin.UpdateIdentifier;
 import de.eldoria.betterplugins.commands.plugins.admin.ToggleHidden;
 import de.eldoria.betterplugins.commands.plugins.admin.Update;
 import de.eldoria.betterplugins.configuration.Configuration;
@@ -31,7 +31,7 @@ public class Admin extends AdvancedCommand {
                     cmds.add(new Name(plugin, configuration, info));
                     cmds.add(new Reload(plugin, configuration));
                     cmds.add(new Show(plugin, configuration, info));
-                    cmds.add(new SpigotId(plugin, configuration, info));
+                    cmds.add(new UpdateIdentifier(plugin, configuration, info));
                     cmds.add(new ToggleHidden(plugin, configuration, info));
                     cmds.add(new Update(plugin, configuration, info));
                 })

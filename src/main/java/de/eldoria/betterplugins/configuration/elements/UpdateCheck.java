@@ -1,5 +1,5 @@
 package de.eldoria.betterplugins.configuration.elements;
 
 public enum UpdateCheck {
-    NONE, SPIGOT
+    NONE, SPIGOT, GITHUB_RELEASES, GITHUB_TAGS
 }

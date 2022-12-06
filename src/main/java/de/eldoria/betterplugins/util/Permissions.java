@@ -3,12 +3,24 @@ package de.eldoria.betterplugins.util;
 public class Permissions {
     private static final String BASE = "betterplugins";
 
-    public static final String SEE_HIDDEN = perm(BASE, "seehidden");
-    public static final String UPDATE_NOTIFY = perm(BASE, "updatenotify");
-    public static final String DEPENDENCIES = perm(BASE, "dependencies");
 
     private static String perm(String... vals) {
         return String.join(".", vals);
+    }
+
+    public static class Info {
+        private static final String BASE = perm(Permissions.BASE, "info");
+        public static final String UPDATE_NOTIFY = perm(BASE, "updatenotify");
+
+        public static class Visibility {
+            private static final String BASE = perm(Info.BASE, "visibility");
+            public static final String HIDDEN = perm(BASE, "hidden");
+            public static final String DEPENDS = perm(BASE, "depends");
+            public static final String SOFT_DEPENDS = perm(BASE, "softdepends");
+            public static final String USAGE = perm(BASE, "usage");
+            public static final String DOWNLOAD = perm(BASE, "download");
+            public static final String INFO = perm(BASE, "info");
+        }
     }
 
     public static class Commands {

@@ -33,7 +33,7 @@ public class JoinListener implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        if (!event.getPlayer().hasPermission(Permissions.UPDATE_NOTIFY)) return;
+        if (!event.getPlayer().hasPermission(Permissions.Info.UPDATE_NOTIFY)) return;
         List<String> updates = new ArrayList<>();
         for (var update : updateChecker.updates().entrySet()) {
             ConfPlugin plugin = configuration.getPlugin(update.getKey()).get();

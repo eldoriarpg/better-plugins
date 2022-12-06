@@ -18,13 +18,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-public class SpigotId extends AdvancedCommand implements ITabExecutor {
+public class UpdateIdentifier extends AdvancedCommand implements ITabExecutor {
 
     private final Configuration configuration;
     private final Info info;
 
-    public SpigotId(Plugin plugin, Configuration configuration, Info info) {
-        super(plugin, CommandMeta.builder("spigotid")
+    public UpdateIdentifier(Plugin plugin, Configuration configuration, Info info) {
+        super(plugin, CommandMeta.builder("updateIdentifier")
                 .addUnlocalizedArgument("plugin", true)
                 .build());
         this.configuration = configuration;
@@ -36,7 +36,14 @@ public class SpigotId extends AdvancedCommand implements ITabExecutor {
         Optional<ConfPlugin> plugin = configuration.getPlugin(args.asString(0));
         CommandAssertions.isTrue(plugin.isPresent(), "Invalid plugin");
 
-        plugin.get().spigotId(args.asInt(1));
+        switch (plugin.get().updateCheck()) {
+            case NONE -> throw CommandException.message("No update check active");
+            case SPIGOT -> plugin.get().updateIdentifier(String.valueOf(args.asInt(1)));
+            case GITHUB_RELEASES, GITHUB_TAGS -> {
+                CommandAssertions.isTrue(args.asString(1).matches("^[^/]+?/[^/]+?$"), "Invalid link format");
+                plugin.get().updateIdentifier(args.asString(1));
+            }
+        }
         info.show(plugin.get(), sender);
 
         configuration.save();
@@ -48,7 +55,7 @@ public class SpigotId extends AdvancedCommand implements ITabExecutor {
         if (args.sizeIs(1)) {
             return configuration.completePlugin(args.asString(0));
         }
-        if(args.sizeIs(1)){
+        if (args.sizeIs(1)) {
             return TabCompleteUtil.completeMinInt(args.asString(1), 0);
         }
         return Collections.emptyList();

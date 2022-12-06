@@ -4,6 +4,7 @@ package de.eldoria.betterplugins.configuration;
 import de.eldoria.betterplugins.configuration.elements.ConfPlugin;
 import de.eldoria.eldoutilities.configuration.EldoConfig;
 import de.eldoria.eldoutilities.simplecommands.TabCompleteUtil;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
@@ -27,13 +28,14 @@ public class Configuration extends EldoConfig {
 
     @Override
     protected void reloadConfigs() {
+        FileConfiguration plugins = loadConfig("plugins", null, true);
         activePlugins = new HashMap<>();
         inactivePlugins = new HashMap<>();
-        for (ConfPlugin plugin : (List<ConfPlugin>) getConfig().getList("activePlugins", new ArrayList<ConfPlugin>())) {
+        for (ConfPlugin plugin : (List<ConfPlugin>) plugins.getList("activePlugins", new ArrayList<ConfPlugin>())) {
             setActive(plugin);
         }
 
-        for (ConfPlugin plugin : (List<ConfPlugin>) getConfig().getList("inactivePlugins", new ArrayList<ConfPlugin>())) {
+        for (ConfPlugin plugin : (List<ConfPlugin>) plugins.getList("inactivePlugins", new ArrayList<ConfPlugin>())) {
             setInactive(plugin);
         }
 
@@ -49,6 +51,7 @@ public class Configuration extends EldoConfig {
     }
 
     public void setActive(ConfPlugin plugin) {
+        getPlugin().getLogger().info("Marked plugin " + plugin.name() + " as active");
         inactivePlugins.remove(plugin.name().toLowerCase(Locale.ROOT));
         activePlugins.put(plugin.name().toLowerCase(Locale.ROOT), plugin);
     }
@@ -58,6 +61,7 @@ public class Configuration extends EldoConfig {
     }
 
     public void setInactive(ConfPlugin plugin) {
+        getPlugin().getLogger().info("Marked plugin " + plugin.name() + " as inactive");
         activePlugins.remove(plugin.name().toLowerCase(Locale.ROOT));
         inactivePlugins.put(plugin.name().toLowerCase(Locale.ROOT), plugin);
     }
@@ -68,8 +72,9 @@ public class Configuration extends EldoConfig {
 
     @Override
     protected void saveConfigs() {
-        getConfig().set("activePlugins", new ArrayList<>(activePlugins()));
-        getConfig().set("inactivePlugins", new ArrayList<>(inactivePlugins()));
+        FileConfiguration plugins = loadConfig("plugins", null, false);
+        plugins.set("activePlugins", new ArrayList<>(activePlugins()));
+        plugins.set("inactivePlugins", new ArrayList<>(inactivePlugins()));
         getConfig().set("checkUpdates", checkUpdates);
     }
 

@@ -7,6 +7,7 @@ import org.bukkit.plugin.PluginManager;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class PluginService {
     public static final Pattern PLUGIN_ID = Pattern.compile("spigotmc.org/resources/.*?(?<id>[0-9]+)/?$");
@@ -39,19 +40,25 @@ public class PluginService {
 
         // Add new plugins
         for (Plugin plugin : pm.getPlugins()) {
-            if (configuration.isActive(plugin.getName())) continue;
+            if (configuration.getPlugin(plugin.getName()).isPresent()) continue;
+            this.plugin.getLogger().info("Detected new plugin " + plugin.getName());
             var descr = plugin.getDescription();
 
-            int id = 0;
+            String updateIdentifier = null;
 
             if (descr.getWebsite() != null) {
                 Matcher matcher = PLUGIN_ID.matcher(descr.getWebsite());
                 if (matcher.find()) {
-                    id = Integer.parseInt(matcher.group("id"));
+                    this.plugin.getLogger().info("Detected spigot id for " + plugin.getName());
+                    updateIdentifier = matcher.group("id");
                 }
             }
-
-            configuration.setActive(new ConfPlugin(plugin.getName(), descr.getWebsite(), id));
+            configuration.setActive(new ConfPlugin(plugin.getName(), descr.getWebsite(), updateIdentifier));
         }
+
+        plugin.getLogger().info("Discovered " + configuration.activePlugins().size() + " active plugins");
+        plugin.getLogger().info("Active: " + configuration.activePlugins().stream().map(ConfPlugin::name).collect(Collectors.joining(", ")));
+        plugin.getLogger().info("Backed up " + configuration.inactivePlugins().size() + " inactive plugins");
+        plugin.getLogger().info("Inactive: " + configuration.inactivePlugins().stream().map(ConfPlugin::name).collect(Collectors.joining(", ")));
     }
 }
