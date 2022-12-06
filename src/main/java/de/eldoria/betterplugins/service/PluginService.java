@@ -57,8 +57,10 @@ public class PluginService {
         }
 
         plugin.getLogger().info("Discovered " + configuration.activePlugins().size() + " active plugins");
-        plugin.getLogger().info("Active: " + configuration.activePlugins().stream().map(ConfPlugin::name).collect(Collectors.joining(", ")));
+        plugin.getLogger().info("Active: " + configuration.activePlugins().stream().map(ConfPlugin::name)
+                                                          .collect(Collectors.joining(", ")));
         plugin.getLogger().info("Backed up " + configuration.inactivePlugins().size() + " inactive plugins");
-        plugin.getLogger().info("Inactive: " + configuration.inactivePlugins().stream().map(ConfPlugin::name).collect(Collectors.joining(", ")));
+        plugin.getLogger().info("Inactive: " + configuration.inactivePlugins().stream().map(ConfPlugin::name)
+                                                            .collect(Collectors.joining(", ")));
     }
 }

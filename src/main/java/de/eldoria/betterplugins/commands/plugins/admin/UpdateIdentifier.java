@@ -40,7 +40,8 @@ public class UpdateIdentifier extends AdvancedCommand implements ITabExecutor {
             case NONE -> throw CommandException.message("No update check active");
             case SPIGOT -> plugin.get().updateIdentifier(String.valueOf(args.asInt(1)));
             case GITHUB_RELEASES, GITHUB_TAGS -> {
-                CommandAssertions.isTrue(args.asString(1).matches("^[^/]+?/[^/]+?$"), "Invalid link format. owner/repo");
+                CommandAssertions.isTrue(args.asString(1)
+                                             .matches("^[^/]+?/[^/]+?$"), "Invalid link format. owner/repo");
                 plugin.get().updateIdentifier(args.asString(1));
             }
         }
@@ -58,19 +59,12 @@ public class UpdateIdentifier extends AdvancedCommand implements ITabExecutor {
         if (args.sizeIs(1)) {
             Optional<ConfPlugin> plugin = configuration.getPlugin(args.asString(0));
             CommandAssertions.isTrue(plugin.isPresent(), "Unknown plugin");
-            switch (plugin.get().updateCheck()) {
-                case NONE -> {
-                    return Collections.singletonList("No update check active.");
-                }
-                case SPIGOT -> {
-                    return TabCompleteUtil.completeMinInt(args.asString(1), 0);
-                }
-                case GITHUB_RELEASES, GITHUB_TAGS -> {
-                    return Collections.singletonList("<owner/repo>");
-                }
-            }
+            return switch (plugin.get().updateCheck()) {
+                case NONE -> Collections.singletonList("No update check active.");
+                case SPIGOT -> TabCompleteUtil.completeMinInt(args.asString(1), 0);
+                case GITHUB_RELEASES, GITHUB_TAGS -> Collections.singletonList("<owner/repo>");
+            };
         }
         return Collections.emptyList();
     }
-
 }

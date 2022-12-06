@@ -1,4 +1,3 @@
-
 package de.eldoria.betterplugins.configuration;
 
 import de.eldoria.betterplugins.configuration.elements.ConfPlugin;

@@ -46,7 +46,7 @@ public class Hide extends AdvancedCommand implements ITabExecutor {
         if (args.sizeIs(1)) {
             return configuration.completePlugin(args.asString(0));
         }
-        if(args.sizeIs(2)){
+        if (args.sizeIs(2)) {
             return TabCompleteUtil.completeBoolean(args.asString(1));
         }
         return Collections.emptyList();
