@@ -6,7 +6,7 @@ authors:
 supportedPlatforms:
   - spigot
 supportedGameVersions: 1.8 - 1.16.5
-category: game
+category: adminTool
 introduction:
   de: Eine verbesserte Plugin-Liste mit zahlreichen Einstellungen
   en: An improved plugin list with numerous settings
