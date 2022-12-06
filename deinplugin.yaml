@@ -1,0 +1,65 @@
+specVersion: 1
+type: plugin
+name: Better Plugins
+authors:
+  - RainbowDashLabs
+supportedPlatforms:
+  - spigot
+supportedGameVersions: 1.8 - 1.16.5
+category: adminTool
+introduction:
+  de: Eine verbesserte Plugin-Liste mit zahlreichen Einstellungen
+  en: An improved plugin list with numerous settings
+description:
+  de: |
+     Die bessere Plugin-Liste. Weitere Informationen zu den Plugin-Autoren, das Anzeigen der Beschreibung sowie
+     eine automatische Überprüfung auf Updates via Spigot.
+     
+     # Funktionen
+    
+     ## Updates
+     Das Plugin kann Update-Checks über die Spigot-API durchführen. Es erkennt neue Funktionen, indem es die Werte der 
+     Versionszeichenfolge vergleicht, anstatt nur zu prüfen, ob die Version unterschiedlich ist. Das vermeidet 
+     Update-Hinweise beim Verwenden von Snapshots oder Entwickler-Builds.
+     
+     `/bp updates` gibt eine Liste von aktualisierbaren Plugins aus. 
+     Mit der Berechtigung "betterplugins.updatenotify" wird zudem beim Beitritt eine Update-Benachrichtigung ausgegeben.
+    
+     ## Bessere Plugin-Liste
+     Das Plugin ersetzt die gewohnte Plugin-Liste. Jeder Plugin-Eintrag zeigt beim Hovern einige Informationen.
+     Beim Klicken auf ein Plugin werden noch mehr Informationen sichtbar.
+     
+     ## Plugins überschreiben
+     Die Namen und Beschreibungen von Plugins können getauscht werden. Auch kann man eine Download- und Info-URL festlegen, die
+     in den detaillierten Plugin-Informationen angezeigt wird. Plugins können auch auch vollständig ausgeblendet werden. 
+     All das kann durch eine Config oder individuell durch Befehle im Spiel eingestellt werden.
+     
+     ## Dependency-Ansicht
+     Es ist direkt einsehbar, welche Plugins von anderen Plugins abhängig sind und welche Plugins tatsächlich andere Plugins nutzen.
+     Deinstalliere niemals Plugins, welche von anderen Plugins benötigt werden!
+  en: |
+    The better plugin list. More information about the plugin authors, shows the description and can additionally check 
+    for plugin updates via spigot.
+    
+    # Features
+    
+    ## Update Checking
+    The plugin can perform update checks via the spigot api. It recognizes new functions by comparing the values of the 
+    version string instead of just checking if the version is different. That avoids update notices when running 
+    snapshots or dev builds.
+    
+    `/bp updates` will give you a list of updateable plugins. If you have the `betterplugins.updatenotify` permission 
+    your will get an update notification on join.
+    
+    ## Better plugin list
+    The plugin replaces your usual plugin list. Every plugin entry is clickable and will revel some additional 
+    information on hover and even more when you click on it.
+    
+    ## Plugin override
+    You can change the names of plugins with a pretty name, alter the description and set a download and info url which 
+    will be displayed in the detailed plugin info. You can also completely hide plugins away. All of it can be 
+    configured by a configuration files or individually by commands ingame.
+    
+    ## Dependency view
+    You can directly see which plugins depend on a plugin, and you can also see which plugins are actually using another 
+    plugin. Never uninstall a plugin which is still needed by others! 
