@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -34,6 +35,10 @@ public record Version(List<Integer> nums) implements Comparable<Version> {
 
     public boolean isNewer(Version version) {
         return compareTo(version) > 0;
+    }
+
+    public Comparator<String> comparator(){
+        return Comparator.comparing(Version::parse);
     }
 
     @Override
