@@ -24,7 +24,7 @@ java {
 }
 
 publishData {
-    useEldoNexusRepos()
+    useEldoNexusRepos(true)
     publishComponent("java")
 }
 
