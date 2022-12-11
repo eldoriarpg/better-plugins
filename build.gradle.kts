@@ -35,12 +35,39 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
 }
 
+publishing {
+    publications.create<MavenPublication>("maven") {
+        publishData.configurePublication(this)
+    }
+
+    repositories {
+        maven {
+            authentication {
+                credentials(PasswordCredentials::class) {
+                    username = System.getenv("NEXUS_USERNAME")
+                    password = System.getenv("NEXUS_PASSWORD")
+                }
+            }
+
+            name = "EldoNexus"
+            url = uri(publishData.getRepository())
+        }
+    }
+}
+
 tasks {
+    compileJava {
+        options.encoding = "UTF-8"
+    }
+
+    compileTestJava {
+        options.encoding = "UTF-8"
+    }
+
     shadowJar {
         val shadebase = "de.eldoria.betterplugins."
         relocate("de.eldoria.eldoutilities", shadebase + "eldoutilities")
         mergeServiceFiles()
-        archiveFileName.set("betterplugins.jar")
     }
 
     register<Copy>("copyToServer") {
@@ -59,6 +86,9 @@ tasks {
 
     test {
         useJUnitPlatform()
+        testLogging {
+            events("passed", "skipped", "failed")
+        }
     }
 }
 
