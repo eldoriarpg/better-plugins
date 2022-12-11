@@ -21,6 +21,11 @@ java {
     }
 }
 
+publishData {
+    useEldoNexusRepos()
+    publishComponent("java")
+}
+
 dependencies {
     compileOnly("org.spigotmc", "spigot-api", "1.16.5-R0.1-SNAPSHOT")
     implementation("de.eldoria", "eldo-util", "1.14.0-DEV")
