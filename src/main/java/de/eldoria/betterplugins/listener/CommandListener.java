@@ -14,7 +14,7 @@ public class CommandListener implements Listener {
     public void onCommand(PlayerCommandPreprocessEvent event) {
         String message = event.getMessage();
         for (String name : names) {
-            if (!message.startsWith("/" + name)) continue;
+            if (!message.equals("/" + name)) continue;
             message = message.replace("/" + name, "/betterplugins");
         }
         event.setCancelled(false);
