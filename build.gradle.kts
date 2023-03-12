@@ -3,7 +3,7 @@ plugins {
     `maven-publish`
     id("de.chojo.publishdata") version "1.2.4"
     id("net.minecrell.plugin-yml.bukkit") version "0.5.3"
-    id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("com.github.johnrengelman.shadow") version "8.1.0"
 }
 
 group = "de.eldoria"
