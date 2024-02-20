@@ -33,7 +33,7 @@ dependencies {
     compileOnly("org.spigotmc", "spigot-api", "1.16.5-R0.1-SNAPSHOT")
     implementation("de.eldoria", "eldo-util", "1.14.4")
     bukkitLibrary("net.kyori", "adventure-platform-bukkit", "4.3.2")
-    bukkitLibrary("net.kyori", "adventure-text-minimessage", "4.15.0")
+    bukkitLibrary("net.kyori", "adventure-text-minimessage", "4.16.0")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.2")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.2")
 }
