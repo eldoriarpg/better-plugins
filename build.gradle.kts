@@ -34,8 +34,8 @@ dependencies {
     implementation("de.eldoria", "eldo-util", "1.14.5")
     bukkitLibrary("net.kyori", "adventure-platform-bukkit", "4.4.1")
     bukkitLibrary("net.kyori", "adventure-text-minimessage", "4.24.0")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.11.4")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.11.4")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:6.1.3")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:6.1.3")
 }
 
 publishing {
