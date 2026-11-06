@@ -1,7 +1,7 @@
 plugins {
     java
     `maven-publish`
-    id("de.chojo.publishdata") version "1.4.0"
+    id("de.chojo.publishdata") version "2.3.0"
     id("net.minecrell.plugin-yml.bukkit") version "0.6.0"
     id("com.github.johnrengelman.shadow") version "8.1.1"
 }
@@ -33,9 +33,9 @@ dependencies {
     compileOnly("org.spigotmc", "spigot-api", "1.16.5-R0.1-SNAPSHOT")
     implementation("de.eldoria", "eldo-util", "1.14.5")
     bukkitLibrary("net.kyori", "adventure-platform-bukkit", "4.4.1")
-    bukkitLibrary("net.kyori", "adventure-text-minimessage", "4.24.0")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.11.4")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.11.4")
+    bukkitLibrary("net.kyori", "adventure-text-minimessage", "5.2.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:6.1.3")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:6.1.3")
 }
 
 publishing {
